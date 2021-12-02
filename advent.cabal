@@ -7,11 +7,11 @@ cabal-version: 1.12
 name:           advent
 version:        0.1.0.0
 description:    Please see the README on GitHub at <https://github.com/githubuser/advent#readme>
-homepage:       https://github.com/githubuser/advent#readme
-bug-reports:    https://github.com/githubuser/advent/issues
-author:         Author name here
-maintainer:     example@example.com
-copyright:      2021 Author name here
+homepage:       https://github.com/qvdpost/advent_of_code_2021#readme
+bug-reports:    https://github.com/qvdpost/advent_of_code_2021/issues
+author:         Quinten van der Post
+maintainer:     quinten@quinner.nl
+copyright:      2021 Quinten van der Post
 license:        BSD3
 license-file:   LICENSE
 build-type:     Simple
@@ -21,7 +21,7 @@ extra-source-files:
 
 source-repository head
   type: git
-  location: https://github.com/githubuser/advent
+  location: https://github.com/qvdpost/advent_of_code_2021
 
 library
   exposed-modules:

@@ -1,10 +1,10 @@
 name:                advent
 version:             0.1.0.0
-github:              "githubuser/advent"
+github:              "qvdpost/advent_of_code_2021"
 license:             BSD3
-author:              "Author name here"
-maintainer:          "example@example.com"
-copyright:           "2021 Author name here"
+author:              "Quinten van der Post"
+maintainer:          "quinten@quinner.nl"
+copyright:           "2021 Quinten van der Post"
 
 extra-source-files:
 - README.md

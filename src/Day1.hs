@@ -1,6 +1,6 @@
 module Day1 where
 
-import Helper (exercise)
+import Lib (exercise)
 
 readInt :: String -> Int
 readInt = read
