@@ -1,10 +1,6 @@
 module Day2 where
 
-
-import Data.List ()
 import Helper (exercise)
-import System.IO ()
-import Control.Monad ()
 
 readInt :: String -> Int
 readInt = read
@@ -24,16 +20,15 @@ calcLoc [] (x, y, z) = (x, y, z)
 mulLoc :: (Int, Int, Int) -> Int
 mulLoc (a, b, c) = a * b
 
-
 _main :: IO ()
 _main = do
-    putStrLn $ exercise 1 "Calculate destination of a sequence of moves"
+    putStrLn $ exercise 2 "Calculate destination of a sequence of moves"
 
     contents <- readFile "data.txt"
     let moves = readMoves $ words contents
     let loc = calcLoc moves (0,0,0)
 
-    print $ "Location and direction after moves: " ++ show loc
+    putStrLn $ "Location and direction after moves: " ++ show loc
 
-    print $ "Multiplied location: " ++ show (mulLoc loc)
+    putStrLn $ "Multiplied location: " ++ show (mulLoc loc)
 
