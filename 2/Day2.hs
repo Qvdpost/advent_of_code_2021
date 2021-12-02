@@ -27,11 +27,13 @@ mulLoc (a, b, c) = a * b
 
 _main :: IO ()
 _main = do
-    putStrLn $ exercise 1 "Find number of increasing depths"
+    putStrLn $ exercise 1 "Calculate destination of a sequence of moves"
+
     contents <- readFile "data.txt"
     let moves = readMoves $ words contents
     let loc = calcLoc moves (0,0,0)
-    print $ "Location after moves: " ++ show loc
+
+    print $ "Location and direction after moves: " ++ show loc
 
     print $ "Multiplied location: " ++ show (mulLoc loc)
 
