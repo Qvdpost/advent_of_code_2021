@@ -27,7 +27,6 @@ library
   exposed-modules:
       Day1
       Day2
-      Helper
       Lib
   other-modules:
       Paths_advent

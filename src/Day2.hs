@@ -22,7 +22,7 @@ mulLoc (a, b, c) = a * b
 
 _main :: IO ()
 _main = do
-    putStrLn $ exercise 2 "Calculate destination of a sequence of moves"
+    putStrLn $ exercise 2 "Calculate submarine destination of a sequence of moves"
 
     contents <- readFile "data/data_day2.txt"
     let moves = readMoves $ words contents
