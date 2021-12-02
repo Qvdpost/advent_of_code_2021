@@ -18,7 +18,7 @@ poolValues ns n = sum (take n ns) : poolValues (tail ns) n
 _main :: IO ()
 _main = do
     putStrLn $ exercise 1 "Find number of increasing depths"
-    contents <- readFile "data.txt"
+    contents <- readFile "data/data_day1.txt"
 
     let values = map readInt . words $ contents
     putStrLn $ "Successive increases in depth: " ++ show (sucIncreasing values)
