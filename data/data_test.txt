@@ -1,10 +1,1 @@
-forward 4
-down 8
-down 8
-up 2
-up 7
-forward 5
-forward 5
-up 7
-down 6
-down 3
+16,1,2,0,4,2,7,1,2,14
