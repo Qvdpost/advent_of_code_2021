@@ -1,16 +1,7 @@
 module Day6 where
 
 import Lib
-import Data.List 
-
-readInt :: String -> Integer
-readInt = read
-
-wordsWhen     :: (Char -> Bool) -> String -> [String]
-wordsWhen p s =  case dropWhile p s of
-                      "" -> []
-                      s' -> w : wordsWhen p s''
-                            where (w, s'') = break p s'
+import Data.List
 
 insertGen :: (Integer, Int) -> [(Integer, Int)] -> [(Integer, Int)]
 insertGen new [] = [new]
@@ -28,7 +19,7 @@ simulate n ((fAge,fCount):fishes) | fAge >= 1 = simulate (n-1) nextGen
 
 countFish :: [(Integer, Int)] -> Int
 countFish [] = 0
-countFish ((_,count):fish) = count + (countFish fish)
+countFish ((_,count):fish) = count + countFish fish
 
 readInput :: String -> [(Integer, Int)]
 readInput input = map (\xs@(x:_) -> (x, length xs)) . group . sort $ map readInt (wordsWhen (==',') input)

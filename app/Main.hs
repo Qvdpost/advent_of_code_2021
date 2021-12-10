@@ -10,7 +10,9 @@ import Day4 (_solve, solve, readInput, writeOutput)
 import Day5 (_solve, solve, readInput, writeOutput)
 import Day6 (_solve, solve, readInput, writeOutput)
 import Day7 (_solve, solve, readInput, writeOutput)
-
+import Day8 (_solve, solve, readInput, writeOutput)
+import Day9 (_solve, solve, readInput, writeOutput)
+import Day10 (_solve, solve, readInput, writeOutput)
 
 main :: IO ()
 main = do
@@ -20,10 +22,11 @@ main = do
     -- Day4._solve
     -- Day5._solve
     -- Day6._solve
-    Day7._solve
+    -- Day7._solve
+    -- Day8._solve
+    -- Day9._solve
+    Day10._solve
     putStrLn "\n\n✨ All Done! ✨"
-
--- writeOutput = unlines . (map show)
 
 -- main :: IO ()
 -- main = interact (Day1.writeOutput . Day1.solve . Day1.readInput)

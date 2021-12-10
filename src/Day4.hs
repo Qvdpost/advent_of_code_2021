@@ -7,17 +7,8 @@ isSubset [] _ = False
 isSubset _ [] = False
 isSubset a b = all (`elem` b) a
 
-readInt :: String -> Integer
-readInt = read
-
-wordsWhen     :: (Char -> Bool) -> String -> [String]
-wordsWhen p s =  case dropWhile p s of
-                      "" -> []
-                      s' -> w : wordsWhen p s''
-                            where (w, s'') = break p s'
-
 checkBingo :: [Integer] -> [[Integer]] -> Bool
-checkBingo ns card = any (`isSubset` ns) card
+checkBingo ns = any (`isSubset` ns)
 
 playBingoRound :: [Integer] -> [[[Integer]]] -> [[[Integer]]]
 playBingoRound ns [] = []
@@ -26,7 +17,7 @@ playBingoRound ns (card:cards) | checkBingo ns card = card : playBingoRound ns c
 
 orderedBingoWinners :: Int -> [Integer] -> [[[Integer]]] -> [([Integer], [[Integer]])]
 orderedBingoWinners n ns cards | n >= length ns = []
-                               | results == [] = orderedBingoWinners (n+1) ns cards
+                               | null results = orderedBingoWinners (n+1) ns cards
                                | otherwise = [(input, result) | result <- results] ++ orderedBingoWinners (n+1) ns (removeCards results cards)
     where
         input = take n ns
@@ -41,7 +32,7 @@ readInput input = (ns, cards)
         cards = createCards (dropWhile (=="") (tail content))
 
 consumeLines :: [String] -> [[Integer]]
-consumeLines lines = map (\x -> map readInt x) (map words (takeWhile (/= "") lines))
+consumeLines lines = map (map readInt . words) (takeWhile (/= "") lines)
 
 transposeLines :: [[Integer]] -> [[Integer]]
 transposeLines ([]:rest) = []
@@ -59,7 +50,7 @@ removeCards xs (y:ys) | y `elem` xs   = removeCards xs ys
                     | otherwise = y : removeCards xs ys
 
 remainingNumbers :: [Integer] -> [[Integer]] -> [Integer]
-remainingNumbers ns card = concatMap (filter (\x -> not (x `elem` ns))) (take (length card `div` 2) card)
+remainingNumbers ns card = concatMap (filter (`notElem` ns)) (take (length card `div` 2) card)
 
 writeOutput :: Integer -> String
 writeOutput = show
@@ -74,15 +65,15 @@ _solve :: IO ()
 _solve = do
     putStrLn $ exercise 4 "Play Bingo with a giant squid"
 
-    contents <- readFile "data/data_test.txt"
+    contents <- readFile "data/data_day4.txt"
     let (input, cards) = readInput contents
     let winners = orderedBingoWinners 1 input cards
     let (winput, winner) = head winners
 
-    putStrLn $ "Winning multiplication: " ++ show (last winput * (sum $ remainingNumbers winput winner))
+    putStrLn $ "Winning multiplication: " ++ show (last winput * sum (remainingNumbers winput winner))
 
     let (linput, loser) = last winners
-    putStrLn $ "Losing multiplication: " ++ show (last linput * (sum $ remainingNumbers linput loser))
+    putStrLn $ "Losing multiplication: " ++ show (last linput * sum (remainingNumbers linput loser))
 
 -- _main :: IO ()
 -- _main = interact (writeOutput . solve . readInput)

@@ -8,10 +8,10 @@ readBit c | c == '0' = -1
           | otherwise = 0
 
 readBits :: String -> [Integer]
-readBits byte = map readBit byte
+readBits = map readBit
 
 countBits :: [[Integer]] -> [Integer]
-countBits (a:b:rest) = countBits ((zipWith (+) a b):rest)
+countBits (a:b:rest) = countBits (zipWith (+) a b:rest)
 countBits [a] = a
 countBits [] = []
 
@@ -28,7 +28,7 @@ leastCommonBits (bit:bits) | bit < 0 = 1 : leastCommonBits bits
 leastCommonBits [] = []
 
 bitsToDec :: [Integer] -> Integer
-bitsToDec (bit:bits) = bit * (2^(length bits)) + bitsToDec bits
+bitsToDec (bit:bits) = bit * (2^length bits) + bitsToDec bits
 bitsToDec [] = 0
 
 getBit :: Integer -> Integer
@@ -41,11 +41,11 @@ filterBits [] func = []
 filterBits bits func = fBit : filterBits remainder func
     where
         fBit = head $ func $ countBits $ bits
-        filtered = filter (\x -> fBit == (getBit $ head x)) bits
-        remainder = map (\x -> drop 1 x) filtered
+        filtered = filter (\x -> fBit == getBit (head x)) bits
+        remainder = map (drop 1) filtered
 
 readInput :: String -> [[Integer]]
-readInput = (map readBits) . words
+readInput = map readBits . words
 
 writeOutput :: Integer -> String
 writeOutput = show

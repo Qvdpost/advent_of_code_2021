@@ -1,22 +1,13 @@
 module Day7 where
 
 import Lib
-import Data.List 
-
-readInt :: String -> Integer
-readInt = read
-
-wordsWhen     :: (Char -> Bool) -> String -> [String]
-wordsWhen p s =  case dropWhile p s of
-                      "" -> []
-                      s' -> w : wordsWhen p s''
-                            where (w, s'') = break p s'
+import Data.List
 
 calcDist :: Integer -> Integer -> Integer
 calcDist a b = abs (a - b)
 
 calcCost :: Integer -> [Integer] -> Integer
-calcCost tar locs = sum (map sumSequence [calcDist tar loc | loc <- locs])
+calcCost tar locs = sum ([sumSequence (calcDist tar loc) | loc <- locs])
 
 sumSequence :: Integer -> Integer
 sumSequence a = sum [1..a]
@@ -51,9 +42,10 @@ _solve = do
 
     contents <- readFile "data/data_day7.txt"
     let locs = sort $ readInput contents
-
-    let cost = findOptimum (toInteger ((head locs + last locs) `div` 2)) locs
-    putStrLn $ "Best estimated crab sub position: " ++ show (toInteger ((head locs + last locs) `div` 2))
+    -- let heuristic = toInteger ((head locs + last locs) `div` 2) -- heuristic start for part One
+    let heuristic = sum locs `div` toInteger (length locs) -- heuristic start for part Two
+    let cost = findOptimum heuristic locs
+    putStrLn $ "Best estimated crab sub position: " ++ show heuristic
     putStrLn $ "Cost of crab sub movements: " ++ show (cost)
 
     -- let cost = calcCost (locs !! (length locs `div` 2)) locs
