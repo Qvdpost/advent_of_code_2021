@@ -1,0 +1,25 @@
+module Day0 where
+
+import Lib
+
+readInput :: String -> [String]
+readInput = lines
+
+writeOutput :: Integer -> String
+writeOutput = show
+
+solve :: [String] -> Integer
+solve input = 0
+
+_solve :: IO ()
+_solve = do
+    putStrLn $ exercise 0 "PLACEHOLDER"
+
+    contents <- readFile "data/data_test.txt"
+
+    let value = solve $ readInput contents
+
+    putStrLn $ "PLACEHOLDER MESSAGE: " ++ writeOutput value
+
+_main :: IO ()
+_main = interact (writeOutput . solve . readInput)

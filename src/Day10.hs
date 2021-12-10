@@ -21,6 +21,7 @@ bracketMap c | c == '(' = ')'
              | c == '}' = '{'
              | c == ']' = '['
              | c == '>' = '<'
+             | otherwise = '|'
 
 findClosing :: Char -> String -> String
 findClosing clos [] = ""
@@ -92,7 +93,7 @@ solve input = 0
 
 _solve :: IO ()
 _solve = do
-    putStrLn $ exercise 9 "Syntax Scoring"
+    putStrLn $ exercise 10 "Syntax Scoring"
 
     contents <- readFile "data/data_day10.txt"
     let result = map parseLine (readInput contents)
