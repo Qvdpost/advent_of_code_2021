@@ -85,11 +85,11 @@ filterCorrupt lines result = [line | (line, fix) <- filter (\(x,y) -> null y || 
 writeOutput :: Integer -> String
 writeOutput = show
 
-solve' :: [Integer] -> Integer
-solve' locs = 0
+solve' :: [String] -> Integer
+solve' input = calcScore $ map parseLine input
 
-solve :: [[Integer]] -> Integer
-solve input = 0
+solve :: [String] -> Integer
+solve input = calcFixScore $ map (fixLine . mirrorLine) (filterCorrupt input (map parseLine input))
 
 _solve :: IO ()
 _solve = do
@@ -97,12 +97,12 @@ _solve = do
 
     contents <- readFile "data/data_day10.txt"
     let result = map parseLine (readInput contents)
-    print $ calcScore result
+    putStrLn $ "Syntax illegal score: " ++ writeOutput (solve' (readInput contents))
 
     let incomplete = filterCorrupt (readInput contents) result
     let fixes = map (fixLine . mirrorLine) incomplete
 
-    putStrLn $ "Syntax fix score: " ++ show (calcFixScore fixes)
+    putStrLn $ "Syntax fix score: " ++ writeOutput (solve (readInput contents))
 
--- _main :: IO ()
--- _main = interact (writeOutput . solve . readInput)
+_main :: IO ()
+_main = interact (writeOutput . solve . readInput)
