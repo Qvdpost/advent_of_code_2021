@@ -80,7 +80,7 @@ _solve :: IO ()
 _solve = do
     putStrLn $ exercise 12 "Passage Pathing"
 
-    contents <- readFile "data/data_test.txt"
+    contents <- readFile "data/data_day12.txt"
 
     let graph = readInput contents
 
