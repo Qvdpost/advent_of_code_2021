@@ -11,8 +11,8 @@ genInsertMap input = Map.fromList [(key, ("", head key : value)) | (key, value) 
     where
         mapInput = map ((\x -> (head x, last x)) . words) input
 
-genTransformMap :: Integer -> Map String (String, String) -> Map String (String,String)
-genTransformMap n insertMap = Map.mapWithKey (\key (conv, value) -> converge key value insertMap) insertMap
+genTransformMap :: Integer -> Map String (String, String) -> Map String ((String, String),String)
+genTransformMap n insertMap = Map.mapWithKey (\key (conv, value) -> (converge key value insertMap, value)) insertMap
 
 isConverged :: String ->  Bool
 isConverged a | take 3 a == take 3 (drop 3 a) = True
@@ -34,43 +34,33 @@ polymerize [] _ = ""
 polymerize [a] _ = [a]
 polymerize (a:b:rest) insertMap = transform (a : [b]) insertMap ++ polymerize (b : rest) insertMap
 
--- simulate' :: String -> Map String String -> String
--- simulate' [] _ = "  "
--- simulate' polymer transformMap = init (polymerize (take 2 polymer) transformMap) ++ tail (simulate' (tail polymer) transformMap)
-
--- simulate'' :: Integer -> String -> Map String String -> Map Char Int
--- simulate'' 0 polymer _ =  countElements polymer -- let counts = [snd x | x <- countElements polymer] in toInteger (maximum counts - minimum counts)
--- simulate'' n [a] _ = countElements [a] -- let counts = [snd x | x <- countElements [a]] in toInteger (maximum counts - minimum counts)
--- simulate'' n [] _ = Map.empty
--- simulate'' n (a:b:rest) insertMap = Map.unionWith (+) (simulate'' (n-1) (init $ polymerize (a: [b]) insertMap) insertMap) (simulate'' n (b:rest) insertMap)
-
--- simulate''' :: Integer -> String -> Map String String -> String
--- simulate''' 0 polymer _ =  polymer -- let counts = [snd x | x <- countElements polymer] in toInteger (maximum counts - minimum counts)
--- simulate''' n [a] _ = [a] -- let counts = [snd x | x <- countElements [a]] in toInteger (maximum counts - minimum counts)
--- simulate''' n [] _ = ""
--- simulate''' n (a:b:rest) insertMap = simulate''' (n-1) (init $ polymerize (a: [b]) insertMap) insertMap ++ (simulate''' n (b:rest) insertMap)
-
-polymerize' :: (Char, Char) -> Map String (String,String) -> String
-polymerize' (a,b) = transform (a : [b])
-
 polyPairs :: String -> [(Char, Char)]
 polyPairs [] = []
-polyPairs [a] = [(a, ' ')]
+polyPairs [a] = []
 polyPairs polymer = (head polymer, head $ tail polymer) : polyPairs (drop 1 polymer)
-
-simulate' :: [(Char, Char)] -> Map String (String,String) -> String
-simulate' [] insertMap = ""
-simulate' [(a, ' ')] insertMap = [a]
-simulate' [pair] insertMap = polymerize' pair insertMap
-simulate' (pair:pairs) insertMap = polymerize' pair insertMap ++ simulate' pairs insertMap
-
-simulate'' :: Integer -> [(Char, Char)] -> Map String (String,String) -> String
-simulate'' 1 pairs insertMap = simulate' pairs insertMap
-simulate'' n pairs insertMap = simulate'' (n-1) (polyPairs (simulate' pairs insertMap)) insertMap
 
 simulate :: Integer -> String -> Map String (String, String) -> String
 simulate 0 polymer _ = polymer
 simulate n polymer insertMap = simulate (n-1) (polymerize polymer insertMap) insertMap
+
+transform' :: (Char,Char) -> Map String (String,String) -> Char
+transform' (a,b) transformMap = last value
+    where
+        (conv, value) = transformMap Map.! [a,b]
+
+polymerize' :: (Char, Char) -> Map String (String, String) -> [(Char, Char)]
+polymerize' (a,b) insertMap = [(a, transformation), (transformation, b)]
+    where
+        transformation = transform' (a,b) insertMap
+
+dfs :: Integer -> [(Char, Char)] -> Map String (String, String) -> Map Char Int
+dfs 0 pairs insertMap = countElements (polyFromList pairs)
+dfs n [] insertMap = Map.empty
+dfs n (pair:pairs) insertMap = Map.unionWith (+) (dfs (n-1) (polymerize' pair insertMap) insertMap) (dfs n pairs insertMap)
+
+
+polyFromList ::  [(Char, Char)] -> String
+polyFromList pairs = concat [[x] | (x, y) <- pairs] 
 
 countElements :: String -> Map Char Int
 countElements input = Map.fromList (map (\xs@(x:_) -> (x, length xs)) . group . sort $ input)
@@ -100,27 +90,10 @@ _solve = do
     contents <- readFile "data/data_test.txt"
 
     let (polymer, insertMap) = readInput contents
+    let counts = dfs 40 (polyPairs polymer) insertMap
 
-    let transformMap = genTransformMap 3 insertMap
-
-    let polymerized = simulate'' 2 (polyPairs polymer) transformMap
-    
-    print polymerized
-    -- let occurrences = countElements polymerized
-
-    -- print $ toInteger (maximum occurrences - minimum occurrences)
-
-    print transformMap
-
-    -- let polymerized = simulate'' 2 polymer insertMap
-    -- print polymerized
-    -- print $ toInteger (maximum polymerized - minimum polymerized)
-
-    -- print $ simulate''' 2 polymer insertMap
-    -- let occurrences = countElements polymerized
-    -- let counts = [snd x | x <- occurrences]
-
-    -- let value = solve $ readInput contents
+    print $ counts
+    print $ toInteger (maximum counts - minimum counts)
 
     -- putStrLn $ "PLACEHOLDER MESSAGE: " ++ writeOutput value
 
