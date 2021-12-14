@@ -6,12 +6,12 @@ import Data.List ( transpose )
 readCoord :: String -> (Integer, Integer)
 readCoord coord = (readInt (head coords), readInt (last coords))
     where
-        coords = wordsWhen (==',') coord
+        coords = wordsWhen (==',') coord -- consumes 'x,y'
 
 readFold :: String -> (String, Int)
 readFold line = (head instr, read (last instr))
     where
-        instr = wordsWhen (=='=') (last (words line))
+        instr = wordsWhen (=='=') (last (words line)) --consumes 'fold along x=y'
 
 maxX :: [(Integer, Integer)] -> Integer
 maxX coords = maximum [x | (x,y) <- coords]
@@ -37,6 +37,7 @@ mergeDot (a,b) | a == '#' || b == '#' = '#'
 mergeDots :: [Char] -> [Char] -> [Char]
 mergeDots = zipWith (curry mergeDot)
 
+-- Only works for middle folds or before the middle. Later folds would need to be padded.
 foldMapAt :: (String, Int) -> [[Char]] -> ([[Char]], [[Char]])
 foldMapAt (orientation, foldLine) dotMap | orientation == "y" = let (a, b) = splitAt foldLine dotMap in (a, reverse b)
                                          | otherwise = let (a, b) = splitAt foldLine (transpose dotMap) in (transpose a, map reverse (transpose b))

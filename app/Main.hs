@@ -16,6 +16,7 @@ import Day10 (_solve, solve, readInput, writeOutput)
 import Day11 (_solve, solve, readInput, writeOutput)
 import Day12 (_solve, solve, readInput, writeOutput)
 import Day13 (_solve, solve, readInput, writeOutput)
+import Day14 (_solve, solve, readInput, writeOutput)
 
 main :: IO ()
 main = do
@@ -31,7 +32,8 @@ main = do
     -- Day10._solve
     -- Day11._solve
     -- Day12._solve
-    Day13._solve
+    -- Day13._solve
+    Day14._solve
     putStrLn "\n\n✨ All Done! ✨"
 
 -- main :: IO ()

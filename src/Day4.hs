@@ -47,7 +47,7 @@ createCards lines = (cardLines ++ transposeLines cardLines) : createCards (drop 
 removeCards :: [[[Integer]]] -> [[[Integer]]] -> [[[Integer]]]
 removeCards _ []                 = []
 removeCards xs (y:ys) | y `elem` xs   = removeCards xs ys
-                    | otherwise = y : removeCards xs ys
+                      | otherwise = y : removeCards xs ys
 
 remainingNumbers :: [Integer] -> [[Integer]] -> [Integer]
 remainingNumbers ns card = concatMap (filter (`notElem` ns)) (take (length card `div` 2) card)
